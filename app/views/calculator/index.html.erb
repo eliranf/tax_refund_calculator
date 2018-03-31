@@ -1,8 +1,18 @@
 <div class='calculator-wrapper'>
-    <div>
-        <p>:מין</p>
+    <div class="section js-gender">
+        <p>מין:</p>
         <div>
-            <button type="button">Click Me!</button>
+            <a class="selection-btn js-single-selection" data-option="male">זכר</a>
+            <a class="selection-btn js-single-selection" data-option="female">נקבה</a>
+            <input type="text" name="gender" hidden>
+        </div>
+    </div>
+    <div class="section js-citizen">
+        <p>תושב ישראל?</p>
+        <div>
+            <a class="selection-btn" data-option="true">כן</a>
+            <a class="selection-btn" data-option="false">לא</a>
+            <input type="text" name="israel_citizen" hidden>
         </div>
     </div>
 </div>
