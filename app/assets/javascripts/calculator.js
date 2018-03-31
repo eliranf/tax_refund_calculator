@@ -40,8 +40,10 @@
                 case 'military_service':
                     if(newVal === 'none') {
                         $('.js-military-release-date').hide();
+                        $('.js-military-service-duration').hide();
                     } else {
                         $('.js-military-release-date').show();
+                        $('.js-military-service-duration').show();
                     }
                     break;
             }

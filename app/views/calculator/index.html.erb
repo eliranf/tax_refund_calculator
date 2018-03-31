@@ -2,57 +2,46 @@
     <%= token_tag %> 
     <div class="section">
         <p>מין</p>
-        <div>
-            <a class="selection-btn js-single-selection" data-option="male">זכר</a>
-            <a class="selection-btn js-single-selection" data-option="female">נקבה</a>
-            <input type="text" name="gender" hidden>
-        </div>
+        <a class="selection-btn js-single-selection" data-option="male">זכר</a>
+        <a class="selection-btn js-single-selection" data-option="female">נקבה</a>
+        <input type="text" name="gender" hidden>
     </div>
     <div class="section">
         <p>תושב ישראל?</p>
-        <div>
-            <a class="selection-btn js-single-selection" data-option="true">כן</a>
-            <a class="selection-btn js-single-selection" data-option="false">לא</a>
-            <input type="text" name="israel_citizen" hidden>
-        </div>
+        <a class="selection-btn js-single-selection" data-option="true">כן</a>
+        <a class="selection-btn js-single-selection" data-option="false">לא</a>
+        <input type="text" name="israel_citizen" hidden>
     </div>
     <div class="section">
         <p>מצב משפחתי</p>
-        <div>
-            <a class="selection-btn js-single-selection" data-option="single">רווק</a>
-            <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
-            <input type="text" name="relationship_status" hidden>
-        </div>
+        <a class="selection-btn js-single-selection" data-option="single">רווק</a>
+        <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
+        <input type="text" name="relationship_status" hidden>
     </div>
     <div class="section js-children-section" hidden>
         <p>האם יש לך ילדים?</p>
-        <div>
-            <a class="selection-btn js-single-selection" data-option="true">כן</a>
-            <a class="selection-btn js-single-selection" data-option="false">לא</a>
-            <input type="text" name="has_children" hidden>
-        </div>
+        <a class="selection-btn js-single-selection" data-option="true">כן</a>
+        <a class="selection-btn js-single-selection" data-option="false">לא</a>
+        <input type="text" name="has_children" hidden>
     </div>
     <div class="section js-children-count-section" hidden>
         <p>מספר ילדים</p>
-        <div>
-            <input type="text" name="children_count">
-        </div>
+        <input type="text" name="children_count">
     </div>
     <div class="section js-children-count-section">
         <p>האם שירתת בצבא או בשירות לאומי?</p>
-        <div>
-            <a class="selection-btn js-single-selection" data-option="none">לא</a>
-            <a class="selection-btn js-single-selection" data-option="military">שירות צבאי</a>
-            <a class="selection-btn js-single-selection" data-option="social_service">שירות לאומי</a>
-            <input type="text" name="military_service" hidden>
-        </div>
+        <a class="selection-btn js-single-selection" data-option="none">לא</a>
+        <a class="selection-btn js-single-selection" data-option="military">שירות צבאי</a>
+        <a class="selection-btn js-single-selection" data-option="social_service">שירות לאומי</a>
+        <input type="text" name="military_service" hidden>
     </div>
     <div class="section js-military-release-date" hidden>
         <p>תאריך שחרור</p>
-        <div>
-            <!--<input type="text" name="military_release_date">-->
-            <input type="date" name="military_release_date">
-        </div>
+        <input type="date" name="military_release_date">
+    </div>
+    <div class="section js-military-service-duration" hidden>
+        <p>אורך השירות בחודשים</p>
+        <input type="number" name="military_service_duration">
     </div>
     <input type="submit" value="אישור" class="selection-btn submit-btn">
 </form>
