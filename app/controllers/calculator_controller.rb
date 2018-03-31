@@ -1,4 +1,8 @@
 class CalculatorController < ApplicationController
   def index
-  end      
+  end
+  
+  def create
+    render :index
+  end  
 end

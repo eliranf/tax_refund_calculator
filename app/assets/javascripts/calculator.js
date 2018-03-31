@@ -6,7 +6,8 @@
             e.preventDefault();
 
             var $elem = $(e.target),
-                newVal;
+                newVal,
+                inputName;
 
             if ($elem.hasClass('selected')) {
                 return;
@@ -16,7 +17,34 @@
             $elem.addClass('selected');
             
             newVal = $elem.data('option');
+            inputName = $elem.siblings('input').attr('name');
+
             $elem.siblings('input').val(newVal)
+            
+            switch(inputName) {
+                case 'relationship_status':
+                    if(newVal === 'married') {
+                        $('.js-children-section').show();   
+                    } else {
+                        $('.js-children-section').hide();
+                        $('.js-children-count-section').hide();
+                    }
+                    break;
+                case 'has_children':
+                    if(newVal) {
+                        $('.js-children-count-section').show();
+                    } else {
+                        $('.js-children-count-section').hide();
+                    }
+                    break;
+                case 'military_service':
+                    if(newVal === 'none') {
+                        $('.js-military-release-date').hide();
+                    } else {
+                        $('.js-military-release-date').show();
+                    }
+                    break;
+            }
         });
     });
 })(jQuery);
