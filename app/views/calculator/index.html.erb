@@ -25,8 +25,14 @@
         <input type="text" name="has_children" hidden>
     </div>
     <div class="section js-children-count-section" hidden>
-        <p>מספר ילדים</p>
-        <input type="text" name="children_count">
+        <p>תאריכי לידה</p>
+        <table class="js-children-dates-table">
+            <tr>
+                <td>1</td>
+                <td><input type="date" name="child_birth_date[]"></td>
+            </tr>
+        </table>
+        <a class="selection-btn js-add-child plus-sign">+</a>
     </div>
     <div class="section js-military-service-section">
         <p>האם שירתת בצבא או בשירות לאומי?</p>
@@ -42,6 +48,31 @@
     <div class="section js-military-service-duration" hidden>
         <p>אורך השירות בחודשים</p>
         <input type="number" name="military_service_duration">
+    </div>
+    <div class="section js-education">
+        <p>השכלה אקדמאית</p>
+        <a class="selection-btn js-single-selection" data-option="none">ללא תואר</a>
+        <a class="selection-btn js-single-selection" data-option="first_degree">תואר ראשון</a>
+        <a class="selection-btn js-single-selection" data-option="second_degree">תואר שני</a>
+        <input type="text" name="education" hidden>
+    </div>
+    <div class="section js-first-degree-date" hidden>
+        <p>תאריך סיום תואר ראשון</p>
+        <input type="date" name="first_degree_end_date">
+        <div class="small-section">
+            <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
+            <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
+            <input type="text" name="first_degree_benefits_claimed" hidden>
+        </div>
+    </div>
+    <div class="section js-second-degree-date" hidden>
+        <p>תאריך סיום תואר שני</p>
+        <input type="date" name="second_degree_end_date">
+        <div class="small-section">
+            <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
+            <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
+            <input type="text" name="second_degree_benefits_claimed" hidden>
+        </div>
     </div>
     <input type="submit" value="אישור" class="selection-btn submit-btn">
 </form>

@@ -46,7 +46,36 @@
                         $('.js-military-service-duration').show();
                     }
                     break;
+                case 'education':
+                    switch(newVal) {
+                        case 'none':
+                           $('.js-first-degree-date').hide();
+                           $('.js-second-degree-date').hide();
+                           break;
+                        case 'first_degree':
+                           $('.js-first-degree-date').show();
+                           $('.js-second-degree-date').hide();
+                           break;
+                        case 'second_degree':
+                           $('.js-first-degree-date').show();
+                           $('.js-second-degree-date').show();
+                           break;
+                    }
+                    break;
             }
         });
+        
+        $('.js-add-child').on('click', function(e) {
+            e.preventDefault();
+            
+            addChildRow();
+        });
     });
+    
+    var addChildRow = function() {
+        var index = $('.js-children-dates-table tr').length + 1;
+        $('.js-children-dates-table tr:last').after(
+            '<tr><td>' + index + '</td><td><input type="date" name="child_birth_date[]"></td></tr>'
+        );
+    }
 })(jQuery);
