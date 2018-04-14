@@ -1,110 +1,117 @@
-<form class="calculator-wrapper" method="post">
+
+<div class="header">
     <h1>שאלון החזר מס</h1>
-    <%= token_tag %> 
-    <div class="section">
-        <p>מין</p>
-        <a class="selection-btn js-single-selection" data-option="male">זכר</a>
-        <a class="selection-btn js-single-selection" data-option="female">נקבה</a>
-        <input type="text" name="gender" hidden>
-    </div>
-    <div class="section">
-        <p>גיל</p>
-        <input type="date" name="age">
-    </div>
-    <div class="section">
-        <p>תושב ישראל?</p>
-        <a class="selection-btn js-single-selection" data-option="true">כן</a>
-        <a class="selection-btn js-single-selection" data-option="false">לא</a>
-        <input type="text" name="israel_citizen" hidden>
-    </div>
-    <div class="section">
-        <p>מצב משפחתי</p>
-        <a class="selection-btn js-single-selection" data-option="single">רווק</a>
-        <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
-        <a class="selection-btn js-single-selection" data-option="known_in_public">ידוע בציבור</a>
-        <a class="selection-btn js-single-selection" data-option="single_parent">הורה יחיד</a>
-        <a class="selection-btn js-single-selection" data-option="devorced">גרוש</a>
-        <input type="text" name="relationship_status" hidden>
-    </div>
-    <div class="section js-children-section" hidden>
-        <p>האם יש לך ילדים?</p>
-        <a class="selection-btn js-single-selection" data-option="true">כן</a>
-        <a class="selection-btn js-single-selection" data-option="false">לא</a>
-        <input type="text" name="has_children" hidden>
-    </div>
-    <div class="section js-children-count-section" hidden>
-        <p>תאריכי לידה</p>
-        <table class="js-children-dates-table">
-            <tr>
-                <td>1</td>
-                <td><input type="date" name="child_birth_date[]"></td>
-            </tr>
-        </table>
-        <a class="selection-btn js-add-child plus-sign">+</a>
-    </div>
-    <div class="section js-military-service-section">
-        <p>האם שירתת בצבא או בשירות לאומי?</p>
-        <a class="selection-btn js-single-selection" data-option="none">לא</a>
-        <a class="selection-btn js-single-selection" data-option="military">שירות צבאי</a>
-        <a class="selection-btn js-single-selection" data-option="social_service">שירות לאומי</a>
-        <input type="text" name="military_service" hidden>
-    </div>
-    <div class="section js-military-release-date" hidden>
-        <p>תאריך שחרור</p>
-        <input type="date" name="military_release_date">
-    </div>
-    <div class="section js-military-service-duration" hidden>
-        <p>אורך השירות בחודשים</p>
-        <input type="number" name="military_service_duration">
-    </div>
-    <div class="section js-education">
-        <p>השכלה אקדמאית</p>
-        <a class="selection-btn js-single-selection" data-option="none">ללא תואר</a>
-        <a class="selection-btn js-single-selection" data-option="first_degree">תואר ראשון</a>
-        <a class="selection-btn js-single-selection" data-option="second_degree">תואר שני</a>
-        <input type="text" name="education" hidden>
-    </div>
-    <div class="section js-first-degree-date" hidden>
-        <p>תאריך סיום תואר ראשון</p>
-        <input type="date" name="first_degree_end_date">
-        <div class="small-section">
-            <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
-            <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
-            <input type="text" name="first_degree_benefits_claimed" hidden>
+    <p>*השאלון מנוסח בלשון זכר אך פונה לשני המינים</p>
+</div>
+
+<div class="calculator-wrapper">
+    <form method="post">
+        <%= token_tag %> 
+        <div class="section">
+            <p>מין</p>
+            <a class="selection-btn js-single-selection" data-option="male">זכר</a>
+            <a class="selection-btn js-single-selection" data-option="female">נקבה</a>
+            <input type="text" name="gender" hidden>
         </div>
-    </div>
-    <div class="section" hidden>
-        <p>תאריך סיום תואר שני</p>
-        <input type="date" name="second_degree_end_date">
-        <div class="small-section">
-            <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
-            <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
-            <input type="text" name="second_degree_benefits_claimed" hidden>
+        <div class="section">
+            <p>תאריך לידה</p>
+            <input type="date" name="age" class="big-input">
         </div>
-    </div>
-    <div class="section">
-        <p>נתוני תעסוקה</p>
-        <table class="js-employment-table">
-            <tr>
-                <th>מקום עבודה</th>
-                <th>משכורת בשנת 2017 [שדה 158/172 בטופס 106]</th>
-                <th>הפקדות מזכות לקופות גמל בשנת 2017 [שדה 045/086 בטופס 106]</th>
-                <th>תאריך תחילת עבודה בשנת 2017</th>
-                <th>תאריך סיום עבודה בשנת 2017</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td><input type="number" name="employment[][salary]"></td>
-                <td><input type="number" name="employment[][contribution]"></td>
-                <td><input type="date" name="employment[][start_date]"></td>
-                <td><input type="date" name="employment[][end_date]"></td>
-            </tr>
-        </table>
-        <a class="selection-btn js-add-employment plus-sign">+</a>
-    </div>
-    <div class="section">
-        <p>תקבולים שהתקבלו מהמוסד לביטוח לאומי בשנת 2017 ברוטו (כגון דמי לידה וכו')</p>
-        <input type="number" name="national_insurance">
-    </div>
-    <input type="submit" value="לחישוב החזר המס המגיע" class="selection-btn submit-btn">
-</form>
+        <div class="section">
+            <p>תושב ישראל?</p>
+            <a class="selection-btn js-single-selection" data-option="true">כן</a>
+            <a class="selection-btn js-single-selection" data-option="false">לא</a>
+            <input type="text" name="israel_citizen" hidden>
+        </div>
+        <div class="section">
+            <p>מצב משפחתי</p>
+            <a class="selection-btn js-single-selection" data-option="single">רווק</a>
+            <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
+            <a class="selection-btn js-single-selection" data-option="known_in_public">ידוע בציבור</a>
+            <a class="selection-btn js-single-selection" data-option="single_parent">הורה יחיד</a>
+            <a class="selection-btn js-single-selection" data-option="devorced">גרוש</a>
+            <input type="text" name="relationship_status" hidden>
+        </div>
+        <div class="section js-children-section" hidden>
+            <p>האם יש לך ילדים?</p>
+            <a class="selection-btn js-single-selection" data-option="true">כן</a>
+            <a class="selection-btn js-single-selection" data-option="false">לא</a>
+            <input type="text" name="has_children" hidden>
+        </div>
+        <div class="section js-children-count-section" hidden>
+            <p>תאריכי לידה</p>
+            <table class="js-children-dates-table">
+                <tr>
+                    <td>1</td>
+                    <td><input type="date" name="child_birth_date[]"></td>
+                </tr>
+            </table>
+            <a class="selection-btn js-add-child plus-sign">+</a>
+        </div>
+        <div class="section js-military-service-section">
+            <p>האם שירתת בצבא או בשירות לאומי?</p>
+            <a class="selection-btn js-single-selection" data-option="none">לא</a>
+            <a class="selection-btn js-single-selection" data-option="military">שירות צבאי</a>
+            <a class="selection-btn js-single-selection" data-option="social_service">שירות לאומי</a>
+            <input type="text" name="military_service" hidden>
+        </div>
+        <div class="section js-military-release-date" hidden>
+            <p>תאריך שחרור</p>
+            <input type="date" name="military_release_date" class="big-input">
+        </div>
+        <div class="section js-military-service-duration" hidden>
+            <p>אורך השירות בחודשים</p>
+            <input type="number" name="military_service_duration" class="big-input">
+        </div>
+        <div class="section js-education">
+            <p>השכלה אקדמאית</p>
+            <a class="selection-btn js-single-selection" data-option="none">ללא תואר</a>
+            <a class="selection-btn js-single-selection" data-option="first_degree">תואר ראשון</a>
+            <a class="selection-btn js-single-selection" data-option="second_degree">תואר שני</a>
+            <input type="text" name="education" hidden>
+        </div>
+        <div class="section js-first-degree-date" hidden>
+            <p>תאריך סיום תואר ראשון</p>
+            <input type="date" name="first_degree_end_date" class="big-input">
+            <div class="small-section">
+                <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
+                <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
+                <input type="text" name="first_degree_benefits_claimed" hidden>
+            </div>
+        </div>
+        <div class="section js-second-degree-date" hidden>
+            <p>תאריך סיום תואר שני</p>
+            <input type="date" name="second_degree_end_date" class="big-input">
+            <div class="small-section">
+                <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
+                <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
+                <input type="text" name="second_degree_benefits_claimed" hidden>
+            </div>
+        </div>
+        <div class="section">
+            <p>נתוני תעסוקה</p>
+            <table class="js-employment-table salary-table">
+                <tr>
+                    <th>מקום עבודה</th>
+                    <th>משכורת בשנת 2017</br>[שדה 158/172 בטופס 106]</th>
+                    <th>הפקדות מזכות לקופות גמל בשנת 2017</br>[שדה 045/086 בטופס 106]</th>
+                    <th>תאריך תחילת עבודה בשנת 2017</th>
+                    <th>תאריך סיום עבודה בשנת 2017</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><input type="number" name="employment[][salary]"></td>
+                    <td><input type="number" name="employment[][contribution]"></td>
+                    <td><input type="date" name="employment[][start_date]"></td>
+                    <td><input type="date" name="employment[][end_date]"></td>
+                </tr>
+            </table>
+            <a class="selection-btn js-add-employment plus-sign plus-sign-wide">+</a>
+        </div>
+        <div class="section">
+            <p>תקבולים שהתקבלו מהמוסד לביטוח לאומי בשנת 2017 ברוטו (כגון דמי לידה וכו')</p>
+            <input type="number" name="national_insurance" class="big-input">
+        </div>
+        <input type="submit" value="לחישוב החזר המס המגיע" class="selection-btn submit-btn">
+    </form>
+</div>
