@@ -23,7 +23,7 @@
             
             switch(inputName) {
                 case 'relationship_status':
-                    if(newVal === 'married') {
+                    if(newVal !== 'single') {
                         $('.js-children-section').show();   
                     } else {
                         $('.js-children-section').hide();
@@ -70,12 +70,29 @@
             
             addChildRow();
         });
+        
+        $('.js-add-employment').on('click', function(e) {
+            e.preventDefault();
+            
+            addEmploymentRow();
+        });
     });
     
     var addChildRow = function() {
         var index = $('.js-children-dates-table tr').length + 1;
         $('.js-children-dates-table tr:last').after(
             '<tr><td>' + index + '</td><td><input type="date" name="child_birth_date[]"></td></tr>'
+        );
+    }
+    
+    var addEmploymentRow = function() {
+        var index = $('.js-employment-table tr').length;
+        $('.js-employment-table tr:last').after(
+            '<tr><td>' + index +
+                '<td><input type="number" name="employment[][salary]"></td>\
+                <td><input type="number" name="employment[][contribution]"></td>\
+                <td><input type="date" name="employment[][start_date]"></td>\
+                <td><input type="date" name="employment[][end_date]"></td>'
         );
     }
 })(jQuery);

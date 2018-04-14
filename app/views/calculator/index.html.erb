@@ -1,10 +1,15 @@
 <form class="calculator-wrapper" method="post">
+    <h1>שאלון החזר מס</h1>
     <%= token_tag %> 
     <div class="section">
         <p>מין</p>
         <a class="selection-btn js-single-selection" data-option="male">זכר</a>
         <a class="selection-btn js-single-selection" data-option="female">נקבה</a>
         <input type="text" name="gender" hidden>
+    </div>
+    <div class="section">
+        <p>גיל</p>
+        <input type="date" name="age">
     </div>
     <div class="section">
         <p>תושב ישראל?</p>
@@ -16,6 +21,9 @@
         <p>מצב משפחתי</p>
         <a class="selection-btn js-single-selection" data-option="single">רווק</a>
         <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
+        <a class="selection-btn js-single-selection" data-option="known_in_public">ידוע בציבור</a>
+        <a class="selection-btn js-single-selection" data-option="single_parent">הורה יחיד</a>
+        <a class="selection-btn js-single-selection" data-option="devorced">גרוש</a>
         <input type="text" name="relationship_status" hidden>
     </div>
     <div class="section js-children-section" hidden>
@@ -65,7 +73,7 @@
             <input type="text" name="first_degree_benefits_claimed" hidden>
         </div>
     </div>
-    <div class="section js-second-degree-date" hidden>
+    <div class="section" hidden>
         <p>תאריך סיום תואר שני</p>
         <input type="date" name="second_degree_end_date">
         <div class="small-section">
@@ -74,5 +82,29 @@
             <input type="text" name="second_degree_benefits_claimed" hidden>
         </div>
     </div>
-    <input type="submit" value="אישור" class="selection-btn submit-btn">
+    <div class="section">
+        <p>נתוני תעסוקה</p>
+        <table class="js-employment-table">
+            <tr>
+                <th>מקום עבודה</th>
+                <th>משכורת בשנת 2017 [שדה 158/172 בטופס 106]</th>
+                <th>הפקדות מזכות לקופות גמל בשנת 2017 [שדה 045/086 בטופס 106]</th>
+                <th>תאריך תחילת עבודה בשנת 2017</th>
+                <th>תאריך סיום עבודה בשנת 2017</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><input type="number" name="employment[][salary]"></td>
+                <td><input type="number" name="employment[][contribution]"></td>
+                <td><input type="date" name="employment[][start_date]"></td>
+                <td><input type="date" name="employment[][end_date]"></td>
+            </tr>
+        </table>
+        <a class="selection-btn js-add-employment plus-sign">+</a>
+    </div>
+    <div class="section">
+        <p>תקבולים שהתקבלו מהמוסד לביטוח לאומי בשנת 2017 ברוטו (כגון דמי לידה וכו')</p>
+        <input type="number" name="national_insurance">
+    </div>
+    <input type="submit" value="לחישוב החזר המס המגיע" class="selection-btn submit-btn">
 </form>

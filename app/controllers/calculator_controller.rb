@@ -3,6 +3,7 @@ class CalculatorController < ApplicationController
   end
   
   def create
+    puts params.inspect
     render :index
   end  
 end
