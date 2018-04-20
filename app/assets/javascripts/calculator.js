@@ -81,18 +81,21 @@
     var addChildRow = function() {
         var index = $('.js-children-dates-table tr').length + 1;
         $('.js-children-dates-table tr:last').after(
-            '<tr><td>' + index + '</td><td><input type="date" name="child_birth_date[]"></td></tr>'
+            '<tr><td>' + index + '</td><td><input type="date" name="child_birth_date[' + (index-1) + ']"></td></tr>'
         );
     }
     
     var addEmploymentRow = function() {
         var index = $('.js-employment-table tr').length;
         $('.js-employment-table tr:last').after(
-            '<tr><td>' + index +
-                '<td><input type="number" name="employment[][salary]"></td>\
-                <td><input type="number" name="employment[][contribution]"></td>\
-                <td><input type="date" name="employment[][start_date]"></td>\
-                <td><input type="date" name="employment[][end_date]"></td>'
+            '<tr>\
+                <td>' + index + '</td>\
+                <td><input type="number" name="employment[' + (index-1) + '][salary]"></td>\
+                <td><input type="number" name="employment[' + (index-1) + '][contribution]"></td>\
+                <td><input type="number" name="employment[' + (index-1) + '][tax]"></td>\
+                <td><input type="date" name="employment[' + (index-1) + '][start_date]"></td>\
+                <td><input type="date" name="employment[' + (index-1) + '][end_date]"></td>\
+            </tr>'
         );
     }
 })(jQuery);

@@ -43,7 +43,7 @@
             <table class="js-children-dates-table">
                 <tr>
                     <td>1</td>
-                    <td><input type="date" name="child_birth_date[]"></td>
+                    <td><input type="date" name="child_birth_date[0]"></td>
                 </tr>
             </table>
             <a class="selection-btn js-add-child plus-sign">+</a>
@@ -95,15 +95,17 @@
                     <th>מקום עבודה</th>
                     <th>משכורת בשנת 2017</br>[שדה 158/172 בטופס 106]</th>
                     <th>הפקדות מזכות לקופות גמל בשנת 2017</br>[שדה 045/086 בטופס 106]</th>
+                    <th>מס הכנסה ששולם</br>[שדה 042 בטופס 106]</th>
                     <th>תאריך תחילת עבודה בשנת 2017</th>
                     <th>תאריך סיום עבודה בשנת 2017</th>
                 </tr>
                 <tr>
                     <td>1</td>
-                    <td><input type="number" name="employment[][salary]"></td>
-                    <td><input type="number" name="employment[][contribution]"></td>
-                    <td><input type="date" name="employment[][start_date]"></td>
-                    <td><input type="date" name="employment[][end_date]"></td>
+                    <td><input type="number" name="employment[0][salary]"></td>
+                    <td><input type="number" name="employment[0][contribution]"></td>
+                    <td><input type="number" name="employment[0][tax]"></td>
+                    <td><input type="date" name="employment[0][start_date]"></td>
+                    <td><input type="date" name="employment[0][end_date]"></td>
                 </tr>
             </table>
             <a class="selection-btn js-add-employment plus-sign plus-sign-wide">+</a>
