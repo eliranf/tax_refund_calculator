@@ -11,39 +11,158 @@ class CalculatorController < ApplicationController
     attribute :relationship_status, type: String 
     attribute :has_children, type: Boolean
     attribute :children_birth_year
+    attribute :military_release_date
     attribute :military_service, type: String
     attribute :military_service_duration, type: Integer
     attribute :education, type: String 
-    attribute :first_degree_end_date
-    attribute :first_degree_benefits_claimed, type: Boolean
-    attribute :second_degree_end_date
-    attribute :second_degree_benefits_claimed, type: Boolean
+    attribute :first_degree_end_date, type: DateTime
+    attribute :first_degree_benefits_claimed, type: Boolean, default: true
+    attribute :second_degree_end_date, type: DateTime
+    attribute :second_degree_benefits_claimed, type: Boolean, default: true
     attribute :employment
     attribute :national_insurance, type: Integer
+    attribute :national_insurance_tax, type: Integer
     
     END_OF_YEAR = DateTime.parse('2017-12-31')
     BEGINNING_OF_YEAR = DateTime.parse('2017-01-01')
     
-    def initialize(age:, child_birth_date:, military_release_date:, military_service_duration:, **opts)
+    def initialize(age:, child_birth_date:, military_release_date:, employment:, **opts)
       self.age = ((END_OF_YEAR - DateTime.parse(age)) / 365).to_f
       self.children_birth_year = child_birth_date.values.map { |date| DateTime.parse(date).year }
-      self.military_entitlement_months = calculate_military_entitlement_months(
-        military_release_date,
-        military_service_duration.to_i,
-        military_service,
-        gender
-      )
+      self.military_release_date = DateTime.parse(military_release_date)
+      self.employment = employment.values
         
       super(opts)
     end
     
-    def calculate_military_entitlement_months(military_release_date, military_service_duration, military_service, gender)
-      entitlement_points = military_entitlement_points(military_service, military_service_duration, gender)
-        
-      plus_one_month = DateTime.parse(military_release_date) + 1.month
-      end_of_military = DateTime.civil(plus_one_month.year, plus_one_month.month, 1) + 3.years
+    def test!(func)
+      puts "#{func} = #{self.send(func)}"
+    end
+    
+    def calculate!
+      puts "********* TEST *************"
+      test! :gender_points
+      test! :age_points
+      test! :military_points
+      test! :israel_citizen_points
+      test! :children_points
+      test! :degree_points
+      # test! :working_months
+      test! :tax_on_slary
+      test! :tax_sum
+      test! :contribution_sum
+      test! :gemel
+      test! :total_deductions
+      test! :tax_to_be_paid
+      test! :tax_refund
+      puts "****************************"
+    end
+
+    FIRST_TAX_STEP = 74640
+    SECOND_TAX_STEP = 107070
+    THIRD_TAX_STEP = 171840
+    FOURTH_TAX_STEP = 238800
+    FIFTH_TAX_STEP = 496620
+    SIXTH_TAX_STEP = 640000
+    
+    def tax_refund
+      tax_to_be_paid - tax_sum
+    end
+    
+    def tax_to_be_paid
+      tax_on_slary - total_deductions
+    end
+    
+    def total_deductions
+      points * 2580 + gemel
+    end
+    
+    def gemel
+      contribution_sum > 7308 ? 7308 * 0.35 : contribution_sum * 0.35
+    end
+    
+    def points
+      gender_points + age_points + military_points + israel_citizen_points + children_points + degree_points
+    end
+    
+    def gender_points
+      gender == 'male' ? 0 : 0.5
+    end
+    
+    def age_points
+      ((age >= 16) && (age <= 18)) ? 1 : 0
+    end
+    
+    def israel_citizen_points
+      israel_citizen ? 2.25 : 0
+    end
+    
+    def children_points
+      children_birth_year.inject(0) { |acc, child| acc + child_points(child) }
+    end
+    
+    def degree_points
+      first_degree_points + second_degree_points
+    end
+    
+    def first_degree_points
+      return 0 if first_degree_benefits_claimed
       
-      byebug
+      year = first_degree_end_date.year
+      ((year >= 2015) && (year <= 2016)) ? 1 : 0
+    end
+    
+    def second_degree_points
+      return 0 if first_degree_benefits_claimed
+      
+      year = second_degree_end_date.year
+      ((year >= 2015) && (year <= 2016)) ? 0.5 : 0
+    end
+    
+    def child_points(child_year)
+      return 1.5 if child_year == 2017
+      return 2.5 if ((child_year >= 2012) && (child_year <= 2016))
+      
+      0
+    end
+    
+    def tax_on_slary
+      return salary_sum * 0.10 if salary_sum < FIRST_TAX_STEP
+      return (7464 + (salary_sum - FIRST_TAX_STEP) * 0.14) if salary_sum < SECOND_TAX_STEP
+      return (12004 + (salary_sum - SECOND_TAX_STEP) * 0.2) if salary_sum < THIRD_TAX_STEP
+      return (24958 + (salary_sum - THIRD_TAX_STEP) * 0.31) if salary_sum < FOURTH_TAX_STEP
+      return (45716 + (salary_sum - FOURTH_TAX_STEP) * 0.35) if salary_sum < FIFTH_TAX_STEP
+      return (135953 + (salary_sum - FIFTH_TAX_STEP) * 0.47) if salary_sum < SIXTH_TAX_STEP
+
+      (203341 + (salary_sum - SIXTH_TAX_STEP) * 0.5)
+    end
+    
+    def salary_sum
+      employment.inject(0) { |sum, work| sum + work[:salary].to_i } + national_insurance
+    end
+    
+    def tax_sum
+      employment.inject(0) { |sum, work| sum + work[:tax].to_i } + national_insurance_tax
+    end
+    
+    def contribution_sum
+      employment.inject(0) { |sum, work| sum + work[:contribution].to_i }
+    end
+    
+    def military_points
+      military_entitlement_months = calculate_military_entitlement_months(
+        military_release_date,
+        military_service_duration.to_i,
+        military_service
+      )
+      entitlement_points = military_entitlement_points(military_service, military_service_duration, gender)
+
+      (military_entitlement_months / 12) * entitlement_points
+    end
+    
+    def calculate_military_entitlement_months(military_release_date, military_service_duration, military_service)
+      plus_one_month = military_release_date + 1.month
+      end_of_military = DateTime.civil(plus_one_month.year, plus_one_month.month, 1) + 3.years
       
       return 0 if end_of_military < BEGINNING_OF_YEAR
       return 12 if end_of_military > END_OF_YEAR
@@ -78,37 +197,53 @@ class CalculatorController < ApplicationController
         end
       end
     end
-
-    # def initialize(
-    #       gender:,
-    #       age:,
-    #       israel_citizen:,
-    #       relationship_status:,
-    #       has_children:,
-    #       child_birth_date:,
-    #       military_service:,
-    #       military_release_date:,
-    #       military_service_duration:,
-    #       education:,
-    #       first_degree_end_date:,
-    #       first_degree_benefits_claimed:,
-    #       second_degree_end_date:,
-    #       second_degree_benefits_claimed:,
-    #       employment:,
-    #       national_insurance:,
-    #       **
-    #     )
-    # end
   end
   
   def create
     input = InputParams.new(**stub.deep_symbolize_keys)
-    byebug
+    puts input.calculate!
+
     puts params.inspect
     render :index
   end
   
   def stub
+   {
+    "authenticity_token"=>"rtdcIw36xaEtBN/DCowHKDBwkCWqWBBxC8zfTof3GHTfNSTN5+ZY37bYObquclBqhxd9kNASraobeWfE96Lz8A==",
+    "gender"=>"male",
+    "age"=>"1999-12-19",
+    "israel_citizen"=>"true",
+    "relationship_status"=>"single",
+    "has_children"=>"false",
+    "child_birth_date"=>{
+    },
+    "military_service"=>"military",
+    "military_release_date"=>"2009-04-06",
+    "military_service_duration"=>"36",
+
+    "education"=>"second_degree",
+    "first_degree_end_date"=>"2016-04-04",
+    "first_degree_benefits_claimed"=>"true",
+    "second_degree_end_date"=>"2017-04-25",
+    "second_degree_benefits_claimed"=>"false",
+    "employment"=>{
+    	"0"=>
+    		{
+    		"salary"=>"337405",
+    		"contribution"=>"22050",
+    		"tax"=>"71896",
+    		"start_date"=>"2017-01-01",
+    		"end_date"=>"2017-12-31"
+    		}
+      },
+    "national_insurance"=>"0",
+    "national_insurance_tax" => "0",
+    "controller"=>"calculator",
+    "action"=>"create"
+    }
+  end
+  
+  def stub2
    {
     "authenticity_token"=>"rtdcIw36xaEtBN/DCowHKDBwkCWqWBBxC8zfTof3GHTfNSTN5+ZY37bYObquclBqhxd9kNASraobeWfE96Lz8A==",
     "gender"=>"female",
@@ -124,6 +259,7 @@ class CalculatorController < ApplicationController
     "military_service"=>"military",
     "military_release_date"=>"2016-04-06",
     "military_service_duration"=>"36",
+
     "education"=>"second_degree",
     "first_degree_end_date"=>"2016-04-04",
     "first_degree_benefits_claimed"=>"false",
@@ -156,6 +292,7 @@ class CalculatorController < ApplicationController
     		}
       },
     "national_insurance"=>"20000",
+    "national_insurance_tax" => "10000",
     "controller"=>"calculator",
     "action"=>"create"
     }
