@@ -62,6 +62,13 @@
                            break;
                     }
                     break;
+                case 'unemployment':
+                    if(newVal) {
+                        $('.js-unemployment-months').show();
+                    } else {
+                        $('.js-unemployment-months').hide();
+                    }
+                    break;
             }
         });
         

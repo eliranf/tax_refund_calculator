@@ -11,7 +11,7 @@ class CalculatorController < ApplicationController
     attribute :relationship_status, type: String 
     attribute :has_children, type: Boolean
     attribute :children_birth_year
-    attribute :military_release_date
+    attribute :military_release_date, type: DateTime
     attribute :military_service, type: String
     attribute :military_service_duration, type: Integer
     attribute :education, type: String 
@@ -22,14 +22,15 @@ class CalculatorController < ApplicationController
     attribute :employment
     attribute :national_insurance, type: Integer
     attribute :national_insurance_tax, type: Integer
+    attribute :unemployment, type: Boolean
+    attribute :unemployment_months, type: Integer
     
     END_OF_YEAR = DateTime.parse('2017-12-31')
     BEGINNING_OF_YEAR = DateTime.parse('2017-01-01')
     
     def initialize(age:, child_birth_date:, military_release_date:, employment:, **opts)
       self.age = ((END_OF_YEAR - DateTime.parse(age)) / 365).to_f
-      self.children_birth_year = child_birth_date.values.map { |date| DateTime.parse(date).year }
-      self.military_release_date = DateTime.parse(military_release_date)
+      self.children_birth_year = child_birth_date.values[0].present? ? child_birth_date.values.map { |date| DateTime.parse(date).year } : []
       self.employment = employment.values
         
       super(opts)
@@ -47,7 +48,6 @@ class CalculatorController < ApplicationController
       test! :israel_citizen_points
       test! :children_points
       test! :degree_points
-      # test! :working_months
       test! :tax_on_slary
       test! :tax_sum
       test! :contribution_sum
@@ -55,6 +55,7 @@ class CalculatorController < ApplicationController
       test! :total_deductions
       test! :tax_to_be_paid
       test! :tax_refund
+      test! :employment_months
       puts "****************************"
     end
 
@@ -65,6 +66,12 @@ class CalculatorController < ApplicationController
     FIFTH_TAX_STEP = 496620
     SIXTH_TAX_STEP = 640000
     
+    def employment_months
+      return 12 unless unemployment
+
+      12 - unemployment_months
+    end
+    
     def tax_refund
       tax_to_be_paid - tax_sum
     end
@@ -74,11 +81,12 @@ class CalculatorController < ApplicationController
     end
     
     def total_deductions
-      points * 2580 + gemel
+      points * 2580 * (employment_months / 12.0) + gemel
     end
     
     def gemel
-      contribution_sum > 7308 ? 7308 * 0.35 : contribution_sum * 0.35
+      ratio = (employment_months / 12.0)
+      contribution_sum * ratio > 7308 ? 7308 * ratio * 0.35 : contribution_sum * 0.35
     end
     
     def points
@@ -106,6 +114,7 @@ class CalculatorController < ApplicationController
     end
     
     def first_degree_points
+      return 0 if education == 'none' || first_degree_end_date.blank?
       return 0 if first_degree_benefits_claimed
       
       year = first_degree_end_date.year
@@ -113,7 +122,8 @@ class CalculatorController < ApplicationController
     end
     
     def second_degree_points
-      return 0 if first_degree_benefits_claimed
+      return 0 if education == 'none' || education == 'first_degree' || second_degree_end_date.blank?
+      return 0 if second_degree_benefits_claimed
       
       year = second_degree_end_date.year
       ((year >= 2015) && (year <= 2016)) ? 0.5 : 0
@@ -150,6 +160,8 @@ class CalculatorController < ApplicationController
     end
     
     def military_points
+      return 0 if military_service == 'none' 
+
       military_entitlement_months = calculate_military_entitlement_months(
         military_release_date,
         military_service_duration.to_i,
@@ -200,14 +212,15 @@ class CalculatorController < ApplicationController
   end
   
   def create
-    input = InputParams.new(**stub.deep_symbolize_keys)
+    # input = InputParams.new(**stub.deep_symbolize_keys)
+    input = InputParams.new(**params.deep_symbolize_keys)
     puts input.calculate!
 
     puts params.inspect
     render :index
   end
   
-  def stub
+  def stub2
    {
     "authenticity_token"=>"rtdcIw36xaEtBN/DCowHKDBwkCWqWBBxC8zfTof3GHTfNSTN5+ZY37bYObquclBqhxd9kNASraobeWfE96Lz8A==",
     "gender"=>"male",
@@ -243,7 +256,7 @@ class CalculatorController < ApplicationController
     }
   end
   
-  def stub2
+  def stub
    {
     "authenticity_token"=>"rtdcIw36xaEtBN/DCowHKDBwkCWqWBBxC8zfTof3GHTfNSTN5+ZY37bYObquclBqhxd9kNASraobeWfE96Lz8A==",
     "gender"=>"female",
@@ -293,6 +306,8 @@ class CalculatorController < ApplicationController
       },
     "national_insurance"=>"20000",
     "national_insurance_tax" => "10000",
+    "unemployment"=>"true",
+    "unemployment_months"=>"5",
     "controller"=>"calculator",
     "action"=>"create"
     }

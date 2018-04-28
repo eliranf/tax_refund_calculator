@@ -118,6 +118,20 @@
             <p>מס ששולם</p>
             <input type="number" name="national_insurance_tax" class="big-input">
         </div>
+        <div class="section">
+            <p>האם בתקופה מסויימת במהלך שנת 2017 לא עבדת?</p>
+            <a class="selection-btn js-single-selection" data-option="true">כן</a>
+            <a class="selection-btn js-single-selection" data-option="false">לא</a>
+            <input type="text" name="unemployment" hidden>
+        </div>
+        <div class="section js-unemployment-months" hidden>
+            <p>מספר חודשים מלאים בהם לא עבדת</p>
+            <select name="unemployment_months">
+                <% (1..12).each do |month_num| %>
+                  <option value="<%= month_num %>"><%= month_num %></option>
+                <% end %>
+            </select>
+        </div>
         <input type="submit" value="לחישוב החזר המס המגיע" class="selection-btn submit-btn">
     </form>
 </div>
