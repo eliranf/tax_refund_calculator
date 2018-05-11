@@ -24,68 +24,74 @@
             <input type="text" name="israel_citizen" hidden>
         </div>
         <div class="section">
-            <p>מצב משפחתי</p>
-            <a class="selection-btn js-single-selection" data-option="single">רווק</a>
-            <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
-            <a class="selection-btn js-single-selection" data-option="known_in_public">ידוע בציבור</a>
-            <a class="selection-btn js-single-selection" data-option="single_parent">הורה יחיד</a>
-            <a class="selection-btn js-single-selection" data-option="devorced">גרוש</a>
-            <input type="text" name="relationship_status" hidden>
-        </div>
-        <div class="section js-children-section" hidden>
-            <p>האם יש לך ילדים?</p>
-            <a class="selection-btn js-single-selection" data-option="true">כן</a>
-            <a class="selection-btn js-single-selection" data-option="false">לא</a>
-            <input type="text" name="has_children" hidden>
-        </div>
-        <div class="section js-children-count-section" hidden>
-            <p>תאריכי לידה</p>
-            <table class="js-children-dates-table">
-                <tr>
-                    <td>1</td>
-                    <td><input type="date" name="child_birth_date[0]"></td>
-                </tr>
-            </table>
-            <a class="selection-btn js-add-child plus-sign">+</a>
-        </div>
-        <div class="section js-military-service-section">
-            <p>האם שירתת בצבא או בשירות לאומי?</p>
-            <a class="selection-btn js-single-selection" data-option="none">לא</a>
-            <a class="selection-btn js-single-selection" data-option="military">שירות צבאי</a>
-            <a class="selection-btn js-single-selection" data-option="social_service">שירות לאומי</a>
-            <input type="text" name="military_service" hidden>
-        </div>
-        <div class="section js-military-release-date" hidden>
-            <p>תאריך שחרור</p>
-            <input type="date" name="military_release_date" class="big-input">
-        </div>
-        <div class="section js-military-service-duration" hidden>
-            <p>אורך השירות בחודשים</p>
-            <input type="number" name="military_service_duration" class="big-input">
-        </div>
-        <div class="section js-education">
-            <p>השכלה אקדמאית</p>
-            <a class="selection-btn js-single-selection" data-option="none">ללא תואר</a>
-            <a class="selection-btn js-single-selection" data-option="first_degree">תואר ראשון</a>
-            <a class="selection-btn js-single-selection" data-option="second_degree">תואר שני</a>
-            <input type="text" name="education" hidden>
-        </div>
-        <div class="section js-first-degree-date" hidden>
-            <p>תאריך סיום תואר ראשון</p>
-            <input type="date" name="first_degree_end_date" class="big-input">
-            <div class="small-section">
-                <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
-                <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
-                <input type="text" name="first_degree_benefits_claimed" hidden>
+            <div>
+                <p>מצב משפחתי</p>
+                <a class="selection-btn js-single-selection" data-option="single">רווק</a>
+                <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
+                <a class="selection-btn js-single-selection" data-option="known_in_public">ידוע בציבור</a>
+                <a class="selection-btn js-single-selection" data-option="single_parent" data-toggle="tooltip" title="הורה לילד מתחת לגיל 18, שהורהו השני אינו בחיים או שאינו רשום בתעודת הזהות של הורהו השני">הורה יחיד</a>
+                <a class="selection-btn js-single-selection" data-option="devorced" data-toggle="tooltip" title="הורה גרוש החי בנפרד מההורה השני ומגדל ילד מתחת לגיל 19 בעצמו או משתתף בכלכלתו">גרוש</a>
+                <input type="text" name="relationship_status" hidden>
+            </div>
+            <div class="sub-section js-children-section" hidden>
+                <p>האם יש לך ילדים אשר נולדו בין השנים 2012-2017?</p>
+                <a class="selection-btn js-single-selection" data-option="true">כן</a>
+                <a class="selection-btn js-single-selection" data-option="false">לא</a>
+                <input type="text" name="has_children" hidden>
+            </div>
+            <div class="sub-section js-children-count-section" hidden>
+                <p>תאריכי לידה</p>
+                <table class="js-children-dates-table">
+                    <tr>
+                        <td>1</td>
+                        <td><input type="date" name="child_birth_date[0]" min="2012-01-01" max="2017-12-31"></td>
+                    </tr>
+                </table>
+                <a class="selection-btn js-add-child plus-sign">+</a>
             </div>
         </div>
-        <div class="section js-second-degree-date" hidden>
-            <p>תאריך סיום תואר שני</p>
-            <input type="date" name="second_degree_end_date" class="big-input">
-            <div class="small-section">
-                <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
-                <a class="selection-btn selection-btn-small js-single-selection" data-option="true">נדרשו הטבות בעבר</a>
-                <input type="text" name="second_degree_benefits_claimed" hidden>
+        <div class="section">
+            <div class="js-military-service-section">
+                <p>האם שירתת בצבא או בשירות לאומי בין השנים 2011-2016?</p>
+                <a class="selection-btn js-single-selection" data-option="none">לא</a>
+                <a class="selection-btn js-single-selection" data-option="military">שירות צבאי</a>
+                <a class="selection-btn js-single-selection" data-option="social_service">שירות לאומי</a>
+                <input type="text" name="military_service" hidden>
+            </div>
+            <div class="sub-section js-military-release-date" hidden>
+                <p>תאריך שחרור</p>
+                <input type="date" name="military_release_date" class="big-input">
+            </div>
+            <div class="sub-section js-military-service-duration" hidden>
+                <p>אורך השירות בחודשים</p>
+                <input type="number" name="military_service_duration" class="big-input short-width">
+            </div>
+        </div>
+        <div class="section">
+            <div class="js-education">
+                <p>השכלה אקדמאית</p>
+                <a class="selection-btn js-single-selection" data-option="none">ללא תואר</a>
+                <a class="selection-btn js-single-selection" data-option="first_degree">תואר ראשון</a>
+                <a class="selection-btn js-single-selection" data-option="second_degree">תואר שני</a>
+                <input type="text" name="education" hidden>
+            </div>
+            <div class="sub-section js-first-degree-date" hidden>
+                <p>תאריך סיום תואר ראשון</p>
+                <input type="date" name="first_degree_end_date" class="big-input">
+                <div class="small-section">
+                    <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
+                    <a class="selection-btn selection-btn-small js-single-selection" data-option="true" data-toggle="tooltip" title="בחר באפשרות זו במידה ולפני ה-1/1/17 הצגת למחלקת השכר בעבודתך את אישור סיום התואר וכבר נהנית מזיכוי במס על כך בשנים קודמות">נדרשו הטבות בעבר</a>
+                    <input type="text" name="first_degree_benefits_claimed" hidden>
+                </div>
+            </div>
+            <div class="sub-section js-second-degree-date" hidden>
+                <p>תאריך סיום תואר שני</p>
+                <input type="date" name="second_degree_end_date" class="big-input">
+                <div class="small-section">
+                    <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
+                    <a class="selection-btn selection-btn-small js-single-selection" data-option="true" data-toggle="tooltip" title="בחר באפשרות זו במידה ולפני ה-1/1/17 הצגת למחלקת השכר בעבודתך את אישור סיום התואר וכבר נהנית מזיכוי במס על כך בשנים קודמות">נדרשו הטבות בעבר</a>
+                    <input type="text" name="second_degree_benefits_claimed" hidden>
+                </div>
             </div>
         </div>
         <div class="section">
@@ -96,42 +102,53 @@
                     <th>משכורת בשנת 2017</br>[שדה 158/172 בטופס 106]</th>
                     <th>הפקדות מזכות לקופות גמל בשנת 2017</br>[שדה 045/086 בטופס 106]</th>
                     <th>מס הכנסה ששולם</br>[שדה 042 בטופס 106]</th>
-                    <th>תאריך תחילת עבודה בשנת 2017</th>
-                    <th>תאריך סיום עבודה בשנת 2017</th>
                 </tr>
                 <tr>
                     <td>1</td>
                     <td><input type="number" name="employment[0][salary]"></td>
                     <td><input type="number" name="employment[0][contribution]"></td>
                     <td><input type="number" name="employment[0][tax]"></td>
-                    <td><input type="date" name="employment[0][start_date]"></td>
-                    <td><input type="date" name="employment[0][end_date]"></td>
                 </tr>
             </table>
             <a class="selection-btn js-add-employment plus-sign plus-sign-wide">+</a>
         </div>
         <div class="section">
-            <p>תקבולים שהתקבלו מהמוסד לביטוח לאומי בשנת 2017 ברוטו (כגון דמי לידה וכו')</p>
-            <input type="number" name="national_insurance" class="big-input">
+            <div>
+                <p>האם קיבלת תקבולים מהמוסד לביטוח לאומי בשנת 2017 (כגון דמי לידה, דמי אבטלה וכו')</p>
+                <a class="selection-btn js-single-selection" data-option="true">כן</a>
+                <a class="selection-btn js-single-selection" data-option="false">לא</a>
+                <input type="text" name="national_insurance_accepted" hidden>
+            </div>
+            <div class="js-national-insurance sub-section" hidden>
+                <p>סכום התקבולים ברוטו</p>
+                <input type="number" name="national_insurance" class="big-input mid-width">
+            </div>
+            <div class="js-national-insurance sub-section" hidden>
+                <p>מס הכנסה שנוכה</p>
+                <input type="number" name="national_insurance_tax" class="big-input mid-width">
+            </div>
         </div>
         <div class="section">
-            <p>מס ששולם</p>
-            <input type="number" name="national_insurance_tax" class="big-input">
-        </div>
-        <div class="section">
-            <p>האם בתקופה מסויימת במהלך שנת 2017 לא עבדת?</p>
-            <a class="selection-btn js-single-selection" data-option="true">כן</a>
-            <a class="selection-btn js-single-selection" data-option="false">לא</a>
-            <input type="text" name="unemployment" hidden>
-        </div>
-        <div class="section js-unemployment-months" hidden>
-            <p>מספר חודשים מלאים בהם לא עבדת</p>
-            <select name="unemployment_months">
-                <% (1..12).each do |month_num| %>
-                  <option value="<%= month_num %>"><%= month_num %></option>
-                <% end %>
-            </select>
+            <div>
+                <p>האם בתקופה מסויימת במהלך שנת 2017 לא עבדת?</p>
+                <a class="selection-btn js-single-selection" data-option="true">כן</a>
+                <a class="selection-btn js-single-selection" data-option="false">לא</a>
+                <input type="text" name="unemployment" hidden>
+            </div>
+            <div class="sub-section js-unemployment-months" hidden>
+                <p>מספר חודשים מלאים בהם לא עבדת</p>
+                <select name="unemployment_months" data-toggle="tooltip" title="לדוגמא: במידה ולא עבדת בין התאריכים 3/5-14/7 הכנס 1 (חודש יוני)">
+                    <% (1..12).each do |month_num| %>
+                      <option value="<%= month_num %>"><%= month_num %></option>
+                    <% end %>
+                </select>
+            </div>
         </div>
         <input type="submit" value="לחישוב החזר המס המגיע" class="selection-btn submit-btn">
+
+        <div class="js-result-container" hidden>
+            <p>בהנחה שכל הנתונים שהוזנו מדוייקים, החזר המס נטו המגיע לך הינו:</p>
+            <h3 class="js-result result-amount"></h3>
+        </div>
     </form>
 </div>

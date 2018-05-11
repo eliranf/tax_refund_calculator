@@ -2,6 +2,7 @@
 
 (function($) {
     $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip(); 
         $('.js-single-selection').on('click', function(e) {
             e.preventDefault();
 
@@ -62,6 +63,13 @@
                            break;
                     }
                     break;
+                case 'national_insurance_accepted':
+                    if(newVal) {
+                        $('.js-national-insurance').show();
+                    } else {
+                        $('.js-national-insurance').hide();
+                    }
+                    break;
                 case 'unemployment':
                     if(newVal) {
                         $('.js-unemployment-months').show();
@@ -83,12 +91,43 @@
             
             addEmploymentRow();
         });
+        
+        $('form').submit(function(event) {
+            event.preventDefault();
+            
+            $('.js-result').text ('');
+            $('.result-amount').removeClass('bounce');
+
+            $.ajax({
+                type        : 'POST',
+                url         : '/calculator',
+                data        : $('form').serialize(),
+                dataType    : 'json'
+            })
+            .done(function(response) {
+                var amount = response.amount;
+                
+                $('html, body').animate({scrollTop: $(document).height()}, 'slow');
+
+                console.log(response); 
+                $('.js-result-container').show();
+
+                if(amount == '0') {
+                    $('.js-result').text('אינך זכאי להחזר מס');
+                    $('.result-amount').addClass('bad-color');
+                } else {
+                    $('.js-result').text(response.amount + ' ש"ח');
+                    $('.result-amount').addClass('bounce');
+                    $('.result-amount').addClass('good-color');
+                }
+            });
+        });
     });
     
     var addChildRow = function() {
         var index = $('.js-children-dates-table tr').length + 1;
         $('.js-children-dates-table tr:last').after(
-            '<tr><td>' + index + '</td><td><input type="date" name="child_birth_date[' + (index-1) + ']"></td></tr>'
+            '<tr><td>' + index + '</td><td><input type="date" min="2012-01-01" max="2017-12-31" name="child_birth_date[' + (index-1) + ']"></td></tr>'
         );
     }
     
@@ -100,8 +139,6 @@
                 <td><input type="number" name="employment[' + (index-1) + '][salary]"></td>\
                 <td><input type="number" name="employment[' + (index-1) + '][contribution]"></td>\
                 <td><input type="number" name="employment[' + (index-1) + '][tax]"></td>\
-                <td><input type="date" name="employment[' + (index-1) + '][start_date]"></td>\
-                <td><input type="date" name="employment[' + (index-1) + '][end_date]"></td>\
             </tr>'
         );
     }

@@ -1,4 +1,6 @@
 class CalculatorController < ApplicationController
+  include ActionView::Helpers::NumberHelper
+
   def index
   end
   
@@ -20,20 +22,25 @@ class CalculatorController < ApplicationController
     attribute :second_degree_end_date, type: DateTime
     attribute :second_degree_benefits_claimed, type: Boolean, default: true
     attribute :employment
-    attribute :national_insurance, type: Integer
-    attribute :national_insurance_tax, type: Integer
+    attribute :national_insurance, type: Integer, default: 0
+    attribute :national_insurance_tax, type: Integer, default: 0
     attribute :unemployment, type: Boolean
     attribute :unemployment_months, type: Integer
     
     END_OF_YEAR = DateTime.parse('2017-12-31')
     BEGINNING_OF_YEAR = DateTime.parse('2017-01-01')
     
-    def initialize(age:, child_birth_date:, military_release_date:, employment:, **opts)
-      self.age = ((END_OF_YEAR - DateTime.parse(age)) / 365).to_f
+    def initialize(age:, child_birth_date:, military_release_date:, employment:, national_insurance_accepted:, **opts)
+      self.age = age.present? ? ((END_OF_YEAR - DateTime.parse(age)) / 365).to_f : 20
       self.children_birth_year = child_birth_date.values[0].present? ? child_birth_date.values.map { |date| DateTime.parse(date).year } : []
       self.employment = employment.values
         
       super(opts)
+      
+      if national_insurance_accepted.to_s == 'true'
+        self.national_insurance = 0
+        self.national_insurance_tax = 0
+      end
     end
     
     def test!(func)
@@ -173,6 +180,7 @@ class CalculatorController < ApplicationController
     end
     
     def calculate_military_entitlement_months(military_release_date, military_service_duration, military_service)
+      return 0 unless military_release_date.present?
       plus_one_month = military_release_date + 1.month
       end_of_military = DateTime.civil(plus_one_month.year, plus_one_month.month, 1) + 3.years
       
@@ -214,10 +222,14 @@ class CalculatorController < ApplicationController
   def create
     # input = InputParams.new(**stub.deep_symbolize_keys)
     input = InputParams.new(**params.deep_symbolize_keys)
-    puts input.calculate!
-
     puts params.inspect
-    render :index
+    puts input.calculate!
+    
+    amount = input.calculate!
+    amount = 3000
+    amount = 0 if amount < 500
+
+    render json: { amount: number_with_delimiter(amount.to_i, :delimiter => ',') }
   end
   
   def stub2
