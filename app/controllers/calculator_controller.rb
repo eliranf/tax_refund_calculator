@@ -1,5 +1,8 @@
 class CalculatorController < ApplicationController
   include ActionView::Helpers::NumberHelper
+  
+  def introduction
+  end
 
   def index
   end
@@ -228,6 +231,7 @@ class CalculatorController < ApplicationController
     amount = input.calculate!
     amount = 3000
     amount = 0 if amount < 500
+    amount = amount * 0.8
 
     render json: { amount: number_with_delimiter(amount.to_i, :delimiter => ',') }
   end

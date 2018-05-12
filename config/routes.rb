@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get  '/calculator/introduction' => 'calculator#introduction'
   get  '/calculator' => 'calculator#index'
   post '/calculator' => 'calculator#create'
 
