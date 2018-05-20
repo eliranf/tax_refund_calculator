@@ -1,6 +1,8 @@
 /* global jQuery */
 
 (function($) {
+    var doneCalculation = false;
+
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip(); 
         $('.js-single-selection').on('click', function(e) {
@@ -93,6 +95,10 @@
         });
         
         $('form').submit(function(event) {
+            if (doneCalculation) {
+                return;
+            }
+
             event.preventDefault();
             
             $('.js-result').text ('');
@@ -119,6 +125,11 @@
                     $('.js-result').text(response.amount + ' ש"ח');
                     $('.result-amount').addClass('bounce');
                     $('.result-amount').addClass('good-color');
+                    
+                    setInterval(function() {
+                        doneCalculation = true;
+                        $('form').submit();
+                    }, 2000);
                 }
             });
         });

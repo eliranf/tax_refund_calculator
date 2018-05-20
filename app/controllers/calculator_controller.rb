@@ -3,6 +3,15 @@ class CalculatorController < ApplicationController
   
   def introduction
   end
+  
+  def terms_of_service
+    description_params = params.except('authenticity_token', 'controller', 'action')
+    subject_str = 'הגשת בקשה להחזר מס על סך: '
+    body_str = 'הנתונים שהוכנסו:'
+
+    @subject = subject_str
+    @body = body_str + description_params
+  end
 
   def index
   end
