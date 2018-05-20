@@ -126,6 +126,8 @@
                     $('.result-amount').addClass('bounce');
                     $('.result-amount').addClass('good-color');
                     
+                    debugger;
+                    
                     setInterval(function() {
                         doneCalculation = true;
                         $('form').submit();

@@ -1,4 +1,38 @@
+.cf {
+    clear: both;
+}
+
+.top-bar {
+    top: 0;
+    z-index: 1000;
+    position: fixed;
+    padding: 10px 0;
+    width: 100%;
+    background-color: white;
+
+    ul {
+        float: right;
+        width: 800px;
+        list-style-type: none;
+        display: inline-block;
+        margin-bottom: 0;
+    }
+
+    border-bottom: 1px solid #59a5f2;
+    font-weight: 600;
+
+    li {
+        margin-right:30px;
+        float: right;
+
+        i {
+            margin-right: 30px;
+        }
+    }
+}
+
 .header {
+    margin-top: 50px;;
     text-align: center;
     margin-bottom: 20px;
     
@@ -50,7 +84,7 @@ p {
     display: inline-block;
 }
 
-.container {
+.standard-container {
     width: 800px;
     margin: auto;
     margin-bottom: 50px;   
@@ -62,7 +96,12 @@ p {
     box-shadow: 3px 4px 29px -4px rgba(71, 71, 71, 0.25);
 }
 
-.introduction-wrapper {
+.btn-standard {
+    
+}
+
+.introduction-wrapper,
+.requirements {
     text-align: right;
     
     a {
@@ -180,9 +219,11 @@ p {
 
 .submit-btn {
     margin: 20px auto;
-    width: 250px;
+    width: 336px;
     color: white;
     background-color: #3b95ef;
+    font-size: 25px;
+    padding: 16px 0;
     
     &:hover {
         color: #3b95ef;
@@ -250,33 +291,32 @@ table {
 }
 
 
-.container.requirements {
-    width: 455px;
+.requirements {
+    padding-right:0;
+    // width: 455px;
     margin-bottom: 10px;
 
     i {
         margin-left: 10px;
 
         &.fa-user-circle {
+            color: #3b95ef;
             margin-left: 10px;
             margin-left: 7px;
         }
         
         &.fa-clipboard {
+            color: #3b95ef;
             margin-left: 9px;
             margin-right: 1px;
         }
     }
     
-    text-align: right;
+    // text-align: right;
     list-style-type: none;
     
     ul {
         text-align: right;
         list-style-type: none;
-    }
-    
-    .prepare-items {
-        padding-right: 20px;
     }
 }

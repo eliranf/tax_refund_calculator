@@ -10,7 +10,7 @@ class CalculatorController < ApplicationController
     body_str = 'הנתונים שהוכנסו:'
 
     @subject = subject_str
-    @body = body_str + description_params
+    @body = body_str + description_params.to_s
   end
 
   def index
