@@ -2,18 +2,22 @@ class CalculatorController < ApplicationController
   include ActionView::Helpers::NumberHelper
   
   def introduction
+    @current_step = 0
+  end
+  
+  def index
+    @current_step = 1
   end
   
   def terms_of_service
+    @current_step = 2
+
     description_params = params.except('authenticity_token', 'controller', 'action')
     subject_str = 'הגשת בקשה להחזר מס על סך: '
     body_str = 'הנתונים שהוכנסו:'
 
     @subject = subject_str
     @body = body_str + description_params.to_s
-  end
-
-  def index
   end
   
   class InputParams

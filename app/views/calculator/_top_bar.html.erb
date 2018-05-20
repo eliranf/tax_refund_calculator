@@ -1,8 +1,8 @@
 <div class="top-bar cf">
     <ul class="cf">
-        <li>הקדמה<i class="fas fa-angle-left"></i></li>
-        <li>מחשבון החזר מס<i class="fas fa-angle-left"></i></li>
-        <li>הגשת בקשה להחזר<i class="fas fa-align-justify"></i></li>
+        <li class="<%= 'current-step' if @current_step == 0 %>">הקדמה<i class="fas fa-angle-left"></i></li>
+        <li class="<%= 'current-step' if @current_step == 1 %>">מחשבון החזר מס<i class="fas fa-angle-left"></i></li>
+        <li class="<%= 'current-step' if @current_step == 2 %>">הגשת בקשה להחזר<i class="fas fa-align-justify"></i></li>
         <li>ליצירת קשר: 077-442609</li>
     </ul>
 </div>
