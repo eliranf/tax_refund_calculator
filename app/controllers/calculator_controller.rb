@@ -109,6 +109,8 @@ class CalculatorController < ApplicationController
       test! :tax_refund
       test! :employment_months
       puts "****************************"
+      
+      tax_refund
     end
 
     FIRST_TAX_STEP = 74640
@@ -125,7 +127,7 @@ class CalculatorController < ApplicationController
     end
     
     def tax_refund
-      tax_to_be_paid - tax_sum
+      tax_sum - tax_to_be_paid
     end
     
     def tax_to_be_paid
@@ -265,15 +267,11 @@ class CalculatorController < ApplicationController
   end
   
   def create
-    # input = InputParams.new(**stub.deep_symbolize_keys)
     input = InputParams.new(**params.deep_symbolize_keys)
-    puts params.inspect
-    puts input.calculate!
     
     amount = input.calculate!
-    amount = 3000
     amount = 0 if amount < 500
-    amount = amount * 0.8
+    amount = amount * 0.85
 
     render json: { amount: number_with_delimiter(amount.to_i, :delimiter => ',') }
   end
