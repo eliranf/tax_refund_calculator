@@ -12,12 +12,33 @@ class CalculatorController < ApplicationController
   def terms_of_service
     @current_step = 2
 
-    description_params = params.except('authenticity_token', 'controller', 'action')
+    description_params = params.deep_symbolize_keys.except('authenticity_token', 'controller', 'action')
     subject_str = 'הגשת בקשה להחזר מס על סך: '
-    body_str = 'הנתונים שהוכנסו:'
 
     @subject = subject_str
-    @body = body_str + description_params.to_s
+    @body = email_body
+  end
+  
+  def email_body
+    national_insurance = 'טפסים שהתקבלו מביטוח לאומי עבור קצבאות ששולמו בשנת 2017.' if description_params[:national_insurance_accepted]
+    military_service = 'אישור סיון שירות לאומי / צבאי הכולל תאריך שחרור.' if description_params[:military_service] != 'none'
+
+    if description_params[:education] != 'none'
+      first_degree_benefits_claimed = 'אישור סיום תואר ראשון הכולל את תאריך סיום התואר.' if description_params[:first_degree_benefits_claimed]
+          second_degree_benefits_claimed = 'אישור סיום תואר שני הכולל את תאריך סיום התואר.' if description_params[:second_degree_benefits_claimed]
+    end
+
+    [
+      'תודה שבחרת Returny!',
+      '',
+      'שמך המלא:___________',
+      'טלפון ליצירת קשר:___________',
+      '',
+      'אנא צרף למייל זה:,',
+      'טפסי 106 לשנת 2017.',
+      national_insurance,
+      military_service
+    ].compact.join('%0A')
   end
   
   class InputParams
