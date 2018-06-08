@@ -12,20 +12,20 @@ class CalculatorController < ApplicationController
   def terms_of_service
     @current_step = 2
 
-    description_params = params.deep_symbolize_keys.except('authenticity_token', 'controller', 'action')
+    description_params = params.deep_symbolize_keys.except(:authenticity_token, :controller, :action)
     subject_str = 'הגשת בקשה להחזר מס על סך: '
 
     @subject = subject_str
-    @body = email_body
+    @body = email_body(description_params)
   end
   
-  def email_body
-    national_insurance = 'טפסים שהתקבלו מביטוח לאומי עבור קצבאות ששולמו בשנת 2017.' if description_params[:national_insurance_accepted]
-    military_service = 'אישור סיון שירות לאומי / צבאי הכולל תאריך שחרור.' if description_params[:military_service] != 'none'
+  def email_body(description_params)
+    national_insurance = 'טפסים שהתקבלו מביטוח לאומי עבור קצבאות ששולמו בשנת 2017.' if description_params[:national_insurance_accepted].to_s == 'true'
+    military_service = 'אישור סיום שירות לאומי / צבאי הכולל תאריך שחרור.' if description_params[:military_service].present? && [:military_service] != 'none'
 
     if description_params[:education] != 'none'
-      first_degree_benefits_claimed = 'אישור סיום תואר ראשון הכולל את תאריך סיום התואר.' if description_params[:first_degree_benefits_claimed]
-          second_degree_benefits_claimed = 'אישור סיום תואר שני הכולל את תאריך סיום התואר.' if description_params[:second_degree_benefits_claimed]
+      first_degree_benefits_claimed = 'אישור סיום תואר ראשון הכולל את תאריך סיום התואר.' if description_params[:first_degree_benefits_claimed].to_s == 'true'
+      second_degree_benefits_claimed = 'אישור סיום תואר שני הכולל את תאריך סיום התואר.' if description_params[:second_degree_benefits_claimed].to_s == 'true'
     end
 
     [
@@ -37,8 +37,16 @@ class CalculatorController < ApplicationController
       'אנא צרף למייל זה:,',
       'טפסי 106 לשנת 2017.',
       national_insurance,
-      military_service
-    ].compact.join('%0A')
+      military_service,
+      first_degree_benefits_claimed,
+      second_degree_benefits_claimed,
+      '',
+      'לאחר שליחת המייל, אנו נבצע אימות של הנתונים ונכין את בקשת החזר המס.',
+      'תוך 7 ימי עסקים ניצור עמך קשר להגשת הבקשה למס הכנסה.',
+      '',
+      'המידע המופיע מטה מיועד לצרכים פנימיים, אין למחוק אותו.',
+      ''
+    ].compact.join('%0A') + description_params.to_s.gsub('=>', ': ')
   end
   
   class InputParams
