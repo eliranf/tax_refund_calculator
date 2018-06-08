@@ -158,6 +158,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_attr (~> 0.10.3)
+  activesupport
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
@@ -173,4 +174,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.15.4
+   1.16.2
