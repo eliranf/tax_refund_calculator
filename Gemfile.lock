@@ -155,7 +155,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_attr (~> 0.10.3)
+  active_attr
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
