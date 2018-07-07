@@ -128,6 +128,7 @@
                     
                     setInterval(function() {
                         doneCalculation = true;
+                        $("input[name='total_retun']").val(amount);
                         $('form').submit();
                     }, 2000);
                 }

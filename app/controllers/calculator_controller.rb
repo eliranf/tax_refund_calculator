@@ -20,6 +20,10 @@ class CalculatorController < ApplicationController
   end
   
   def email_body(description_params)
+    return_i = (description_params[:total_retun].gsub(',','').to_i / 0.85).to_i
+    total_return = number_with_delimiter(return_i, :delimiter => ',')
+    commission = number_with_delimiter((return_i * 0.15).to_i, :delimiter => ',')
+
     national_insurance = 'טפסים שהתקבלו מביטוח לאומי עבור קצבאות ששולמו בשנת 2017.' if description_params[:national_insurance_accepted].to_s == 'true'
     military_service = 'אישור סיום שירות לאומי / צבאי הכולל תאריך שחרור.' if description_params[:military_service].present? && [:military_service] != 'none'
 
@@ -30,6 +34,9 @@ class CalculatorController < ApplicationController
 
     [
       'תודה שבחרת Returny!',
+      '',
+      "סכום ההחזר הצפוי: #{total_return}",
+      "סכום העמלה לתשלום: #{commission}",
       '',
       'שמך המלא:___________',
       'טלפון ליצירת קשר:___________',

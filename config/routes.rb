@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get  '' => 'calculator#introduction'
   post '/terms_of_service' => 'calculator#terms_of_service'
+  get '/terms_of_service' => 'calculator#index'
   get  '/calculator' => 'calculator#index'
   post '/calculator' => 'calculator#create'
 
