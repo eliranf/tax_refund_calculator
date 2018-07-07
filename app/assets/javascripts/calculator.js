@@ -3,7 +3,7 @@
 (function($) {
     var doneCalculation = false;
 
-    $(document).ready(function() {
+    var ready = function() {
         $('[data-toggle="tooltip"]').tooltip(); 
         $('.js-single-selection').on('click', function(e) {
             e.preventDefault();
@@ -133,7 +133,9 @@
                 }
             });
         });
-    });
+    };
+
+    $(document).on('turbolinks:load', ready);
     
     var addChildRow = function() {
         var index = $('.js-children-dates-table tr').length + 1;
