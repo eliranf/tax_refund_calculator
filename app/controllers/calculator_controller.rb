@@ -16,10 +16,10 @@ class CalculatorController < ApplicationController
     subject_str = 'הגשת בקשה להחזר מס על סך: '
 
     @subject = subject_str
-    @body = email_body(description_params)
+    @body, @popup_msg, @popup_data = email_content(description_params)
   end
   
-  def email_body(description_params)
+  def email_content(description_params)
     return_i = (description_params[:total_retun].gsub(',','').to_i / 0.85).to_i
     total_return = number_with_delimiter(return_i, :delimiter => ',')
     commission = number_with_delimiter((return_i * 0.15).to_i, :delimiter => ',')
@@ -31,15 +31,23 @@ class CalculatorController < ApplicationController
       first_degree_benefits_claimed = 'אישור סיום תואר ראשון הכולל את תאריך סיום התואר.' if description_params[:first_degree_benefits_claimed].to_s == 'true'
       second_degree_benefits_claimed = 'אישור סיום תואר שני הכולל את תאריך סיום התואר.' if description_params[:second_degree_benefits_claimed].to_s == 'true'
     end
-    
-    send_params = description_params.values.each_with_index.map { |val, i| "#{i}.#{val}" }.join('|')
 
-    [
+    max_length = 392
+    
+    popup_msg = [
       'תודה שבחרת Returny!',
       '',
       "סכום ההחזר הצפוי: #{total_return}",
       "סכום העמלה לתשלום: #{commission}",
       '',
+      '=================================================',
+      'נא להעתיק את התוכן המסומן במלבן מטה במלואו ולהדביקו בגוף המייל שיפתח מיד לאחר לחיצה על כפתור האישור.',
+      '================================================='
+    ].compact.join('\n')
+    
+    popup_data = description_params.to_json
+      
+    body = [
       'שמך המלא:___________',
       'טלפון ליצירת קשר:___________',
       '',
@@ -53,10 +61,36 @@ class CalculatorController < ApplicationController
       'לאחר שליחת המייל, אנו נבצע אימות של הנתונים ונכין את בקשת החזר המס.',
       'תוך 7 ימי עסקים ניצור עמך קשר להגשת הבקשה למס הכנסה.',
       '',
-      'המידע המופיע מטה מיועד לצרכים פנימיים, אין למחוק אותו.',
-      '',
-      send_params
-    ].compact.join('%0A')
+      '==============================',
+      '*** יש להדביק את התוצאות שהתקבלו **',
+      '=============================='
+    ].compact.join('%0A').gsub('"','')[0...max_length]
+    
+    [body, popup_msg, popup_data]
+
+    # [
+    #   'תודה שבחרת Returny!',
+    #   '',
+    #   "סכום ההחזר הצפוי: #{total_return}",
+    #   "סכום העמלה לתשלום: #{commission}",
+    #   '',
+    #   'שמך המלא:___________',
+    #   'טלפון ליצירת קשר:___________',
+    #   '',
+    #   'אנא צרף למייל זה:,',
+    #   'טפסי 106 לשנת 2017.',
+    #   national_insurance,
+    #   military_service,
+    #   first_degree_benefits_claimed,
+    #   second_degree_benefits_claimed,
+    #   '',
+    #   'לאחר שליחת המייל, אנו נבצע אימות של הנתונים ונכין את בקשת החזר המס.',
+    #   'תוך 7 ימי עסקים ניצור עמך קשר להגשת הבקשה למס הכנסה.',
+    #   '',
+    #   'המידע המופיע מטה מיועד לצרכים פנימיים, אין למחוק אותו.',
+    #   '',
+    #   send_params
+    # ].compact.join('%0A').gsub('"','')[0...max_length]
   end
   
   class InputParams

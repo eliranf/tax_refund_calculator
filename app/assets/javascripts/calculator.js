@@ -94,6 +94,17 @@
             addEmploymentRow();
         });
         
+
+        $('a[href^="mailto"]').on('click',
+            function() {
+                var popupMsg = $('a[href^="mailto"]').data('popup').replace(/\\n/g,'\n'),
+                    popupData = $('a[href^="mailto"]').data('output')
+
+
+                prompt(popupMsg, JSON.stringify(popupData));
+            }
+        );
+        
         $('form').submit(function(event) {
             if (doneCalculation) {
                 return;
