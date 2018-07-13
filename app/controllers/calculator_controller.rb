@@ -31,6 +31,8 @@ class CalculatorController < ApplicationController
       first_degree_benefits_claimed = 'אישור סיום תואר ראשון הכולל את תאריך סיום התואר.' if description_params[:first_degree_benefits_claimed].to_s == 'true'
       second_degree_benefits_claimed = 'אישור סיום תואר שני הכולל את תאריך סיום התואר.' if description_params[:second_degree_benefits_claimed].to_s == 'true'
     end
+    
+    send_params = description_params.values.each_with_index.map { |val, i| "#{i}.#{val}" }.join('|')
 
     [
       'תודה שבחרת Returny!',
@@ -52,8 +54,9 @@ class CalculatorController < ApplicationController
       'תוך 7 ימי עסקים ניצור עמך קשר להגשת הבקשה למס הכנסה.',
       '',
       'המידע המופיע מטה מיועד לצרכים פנימיים, אין למחוק אותו.',
-      ''
-    ].compact.join('%0A') + description_params.to_s.gsub('=>', ': ')
+      '',
+      send_params
+    ].compact.join('%0A')
   end
   
   class InputParams
@@ -155,11 +158,13 @@ class CalculatorController < ApplicationController
     end
     
     def gender_points
+      return 0 unless gender.present?
+
       gender == 'male' ? 0 : 0.5
     end
     
     def age_points
-      ((age >= 16) && (age <= 18)) ? 1 : 0
+      ((age >= 16.00822) && (age <= 18.01099)) ? 1 : 0
     end
     
     def israel_citizen_points
@@ -376,3 +381,5 @@ class CalculatorController < ApplicationController
     }
   end
 end
+
+# mailto:returny95@gmail.com?subject=הגשת בקשה להחזר מס על סך: &amp;body=תודה שבחרת Returny!%0A%0Aסכום ההחזר הצפוי: 1,289%0Aסכום העמלה לתשלום: 193%0A%0Aשמך המלא:___________%0Aטלפון ליצירת קשר:___________%0A%0Aאנא צרף למייל זה:,%0Aטפסי 106 לשנת 2017.%0A%0Aלאחר שליחת המייל, אנו נבצע אימות של הנתונים ונכין את בקשת החזר המס.%0Aתוך 7 ימי עסקים ניצור עמך קשר להגשת הבקשה למס הכנסה.%0A%0Aהמידע המופיע מטה מיועד לצרכים פנימיים, אין למחוק אותו.%0A%0A:gender: &quot;&quot;, :age: &quot;&quot;, :israel_citizen: &quot;&quot;, :relationship_status: &quot;&quot;, :has_children: &quot;&quot;, :child_birth_date: :&quot;0&quot;: &quot;&quot;, :military_service: &quot;&quot;, :military_release_date: &quot;&quot;, :military_service_duration: &quot;&quot;, :education: &quot;&amp;sssssssquotasassasaasasas
