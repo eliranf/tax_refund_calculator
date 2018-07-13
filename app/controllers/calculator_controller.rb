@@ -85,7 +85,7 @@ class CalculatorController < ApplicationController
     END_OF_YEAR = DateTime.parse('2017-12-31')
     BEGINNING_OF_YEAR = DateTime.parse('2017-01-01')
     
-    def initialize(age:, child_birth_date:, military_release_date:, employment:, national_insurance_accepted:, **opts)
+    def initialize(age:, child_birth_date:, employment:, national_insurance_accepted:, **opts)
       self.age = age.present? ? ((END_OF_YEAR - DateTime.parse(age)) / 365).to_f : 20
       self.children_birth_year = child_birth_date.values[0].present? ? child_birth_date.values.map { |date| DateTime.parse(date).year } : []
       self.employment = employment.values
@@ -141,7 +141,7 @@ class CalculatorController < ApplicationController
     end
     
     def tax_to_be_paid
-      tax_on_slary - total_deductions
+      [0, tax_on_slary - total_deductions].max
     end
     
     def total_deductions
@@ -181,7 +181,7 @@ class CalculatorController < ApplicationController
     
     def first_degree_points
       return 0 if education == 'none' || first_degree_end_date.blank?
-      return 0 if first_degree_benefits_claimed
+      return 0 if first_degree_benefits_claimed || first_degree_benefits_claimed.blank?
       
       year = first_degree_end_date.year
       ((year >= 2015) && (year <= 2016)) ? 1 : 0
@@ -189,7 +189,7 @@ class CalculatorController < ApplicationController
     
     def second_degree_points
       return 0 if education == 'none' || education == 'first_degree' || second_degree_end_date.blank?
-      return 0 if second_degree_benefits_claimed
+      return 0 if second_degree_benefits_claimed || second_degree_benefits_claimed.blank?
       
       year = second_degree_end_date.year
       ((year >= 2015) && (year <= 2016)) ? 0.5 : 0
@@ -227,6 +227,7 @@ class CalculatorController < ApplicationController
     
     def military_points
       return 0 if military_service == 'none' 
+      return 0 unless gender.present?
 
       military_entitlement_months = calculate_military_entitlement_months(
         military_release_date,
@@ -235,13 +236,14 @@ class CalculatorController < ApplicationController
       )
       entitlement_points = military_entitlement_points(military_service, military_service_duration, gender)
 
-      (military_entitlement_months / 12) * entitlement_points
+      (military_entitlement_months / 12.0) * entitlement_points
     end
     
     def calculate_military_entitlement_months(military_release_date, military_service_duration, military_service)
       return 0 unless military_release_date.present?
-      plus_one_month = military_release_date + 1.month
-      end_of_military = DateTime.civil(plus_one_month.year, plus_one_month.month, 1) + 3.years
+
+      plus_two_month = military_release_date + 2.month
+      end_of_military = DateTime.civil(plus_two_month.year, plus_two_month.month, 1) + 3.years
       
       return 0 if end_of_military < BEGINNING_OF_YEAR
       return 12 if end_of_military > END_OF_YEAR
@@ -287,99 +289,4 @@ class CalculatorController < ApplicationController
 
     render json: { amount: number_with_delimiter(amount.to_i, :delimiter => ',') }
   end
-  
-  def stub2
-   {
-    "authenticity_token"=>"rtdcIw36xaEtBN/DCowHKDBwkCWqWBBxC8zfTof3GHTfNSTN5+ZY37bYObquclBqhxd9kNASraobeWfE96Lz8A==",
-    "gender"=>"male",
-    "age"=>"1999-12-19",
-    "israel_citizen"=>"true",
-    "relationship_status"=>"single",
-    "has_children"=>"false",
-    "child_birth_date"=>{
-    },
-    "military_service"=>"military",
-    "military_release_date"=>"2009-04-06",
-    "military_service_duration"=>"36",
-
-    "education"=>"second_degree",
-    "first_degree_end_date"=>"2016-04-04",
-    "first_degree_benefits_claimed"=>"true",
-    "second_degree_end_date"=>"2017-04-25",
-    "second_degree_benefits_claimed"=>"false",
-    "employment"=>{
-    	"0"=>
-    		{
-    		"salary"=>"337405",
-    		"contribution"=>"22050",
-    		"tax"=>"71896",
-    		"start_date"=>"2017-01-01",
-    		"end_date"=>"2017-12-31"
-    		}
-      },
-    "national_insurance"=>"0",
-    "national_insurance_tax" => "0",
-    "controller"=>"calculator",
-    "action"=>"create"
-    }
-  end
-  
-  def stub
-   {
-    "authenticity_token"=>"rtdcIw36xaEtBN/DCowHKDBwkCWqWBBxC8zfTof3GHTfNSTN5+ZY37bYObquclBqhxd9kNASraobeWfE96Lz8A==",
-    "gender"=>"female",
-    "age"=>"1999-12-19",
-    "israel_citizen"=>"true",
-    "relationship_status"=>"married",
-    "has_children"=>"true",
-    "child_birth_date"=>{
-    	"0" => "2012-04-15",
-    	"1" => "2012-04-16",
-    	"2" => "2012-04-17"
-    },
-    "military_service"=>"military",
-    "military_release_date"=>"2016-04-06",
-    "military_service_duration"=>"36",
-
-    "education"=>"second_degree",
-    "first_degree_end_date"=>"2016-04-04",
-    "first_degree_benefits_claimed"=>"false",
-    "second_degree_end_date"=>"2017-04-25",
-    "second_degree_benefits_claimed"=>"true",
-    "employment"=>{
-    	"0"=>
-    		{
-    		"salary"=>"200000",
-    		"contribution"=>"10000",
-    		"tax"=>"30000",
-    		"start_date"=>"2017-01-01",
-    		"end_date"=>"2017-04-20"
-    		},
-    	"1"=>
-    		{
-    		"salary"=>"200000",
-    		"contribution"=>"10000",
-    		"tax"=>"30000",
-    		"start_date"=>"2016-01-01",
-    		"end_date"=>"2016-04-20"
-    		},
-    	"2"=>
-    		{
-    		"salary"=>"200000",
-    		"contribution"=>"10000",
-    		"tax"=>"30000",
-    		"start_date"=>"2015-01-01",
-    		"end_date"=>"2015-04-20"
-    		}
-      },
-    "national_insurance"=>"20000",
-    "national_insurance_tax" => "10000",
-    "unemployment"=>"true",
-    "unemployment_months"=>"5",
-    "controller"=>"calculator",
-    "action"=>"create"
-    }
-  end
 end
-
-# mailto:returny95@gmail.com?subject=הגשת בקשה להחזר מס על סך: &amp;body=תודה שבחרת Returny!%0A%0Aסכום ההחזר הצפוי: 1,289%0Aסכום העמלה לתשלום: 193%0A%0Aשמך המלא:___________%0Aטלפון ליצירת קשר:___________%0A%0Aאנא צרף למייל זה:,%0Aטפסי 106 לשנת 2017.%0A%0Aלאחר שליחת המייל, אנו נבצע אימות של הנתונים ונכין את בקשת החזר המס.%0Aתוך 7 ימי עסקים ניצור עמך קשר להגשת הבקשה למס הכנסה.%0A%0Aהמידע המופיע מטה מיועד לצרכים פנימיים, אין למחוק אותו.%0A%0A:gender: &quot;&quot;, :age: &quot;&quot;, :israel_citizen: &quot;&quot;, :relationship_status: &quot;&quot;, :has_children: &quot;&quot;, :child_birth_date: :&quot;0&quot;: &quot;&quot;, :military_service: &quot;&quot;, :military_release_date: &quot;&quot;, :military_service_duration: &quot;&quot;, :education: &quot;&amp;sssssssquotasassasaasasas

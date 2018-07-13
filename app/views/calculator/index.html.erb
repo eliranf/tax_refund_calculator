@@ -36,7 +36,7 @@
         </div>
         <div class="section">
             <div>
-                <p>מצב משפחתי</p>
+                <p>מצב משפחתי בשנת 2017</p>
                 <a class="selection-btn js-single-selection" data-option="single">רווק</a>
                 <a class="selection-btn js-single-selection" data-option="married">נשוי</a>
                 <a class="selection-btn js-single-selection" data-option="known_in_public">ידוע בציבור</a>
@@ -63,15 +63,15 @@
         </div>
         <div class="section">
             <div class="js-military-service-section">
-                <p>האם שירתת בצבא או בשירות לאומי בין השנים 2011-2016?</p>
+                <p>האם השתחררת משירות צבאי או לאומי בין החודשים דצמבר 2013 - אוקטובר 2017?</p>
                 <a class="selection-btn js-single-selection" data-option="none">לא</a>
                 <a class="selection-btn js-single-selection" data-option="military">שירות צבאי</a>
                 <a class="selection-btn js-single-selection" data-option="social_service">שירות לאומי</a>
                 <input type="text" name="military_service" hidden>
             </div>
             <div class="sub-section js-military-release-date" hidden>
-                <p>תאריך שחרור</p>
-                <input type="date" name="military_release_date" class="big-input">
+                <p>תאריך שחרור משירות חובה</p>
+                <input type="date" name="military_release_date" class="big-input" min="2013-12-01" max="2017-10-30">
             </div>
             <div class="sub-section js-military-service-duration" hidden>
                 <p>אורך השירות בחודשים</p>
@@ -80,15 +80,15 @@
         </div>
         <div class="section">
             <div class="js-education">
-                <p>השכלה אקדמאית</p>
-                <a class="selection-btn js-single-selection" data-option="none">ללא תואר</a>
+                <p>האם סיימת תואר אקדמי במהלך השנים 2015 - 2016?</p>
+                <a class="selection-btn js-single-selection" data-option="none">לא</a>
                 <a class="selection-btn js-single-selection" data-option="first_degree">תואר ראשון</a>
                 <a class="selection-btn js-single-selection" data-option="second_degree">תואר שני</a>
                 <input type="text" name="education" hidden>
             </div>
             <div class="sub-section js-first-degree-date" hidden>
                 <p>תאריך סיום תואר ראשון</p>
-                <input type="date" name="first_degree_end_date" class="big-input">
+                <input type="date" name="first_degree_end_date" class="big-input" min="2015-01-01" max="2016-12-31">
                 <div class="small-section">
                     <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
                     <a class="selection-btn selection-btn-small js-single-selection" data-option="true" data-toggle="tooltip" title="בחר באפשרות זו במידה ולפני ה-1/1/17 הצגת למחלקת השכר בעבודתך את אישור סיום התואר וכבר נהנית מזיכוי במס על כך בשנים קודמות">נדרשו הטבות בעבר</a>
@@ -97,7 +97,7 @@
             </div>
             <div class="sub-section js-second-degree-date" hidden>
                 <p>תאריך סיום תואר שני</p>
-                <input type="date" name="second_degree_end_date" class="big-input">
+                <input type="date" name="second_degree_end_date" class="big-input" min="2015-01-01" max="2016-12-31">
                 <div class="small-section">
                     <a class="selection-btn selection-btn-small js-single-selection" data-option="false">לא נדרשו הטבות בעבר</a>
                     <a class="selection-btn selection-btn-small js-single-selection" data-option="true" data-toggle="tooltip" title="בחר באפשרות זו במידה ולפני ה-1/1/17 הצגת למחלקת השכר בעבודתך את אישור סיום התואר וכבר נהנית מזיכוי במס על כך בשנים קודמות">נדרשו הטבות בעבר</a>
@@ -125,7 +125,7 @@
         </div>
         <div class="section">
             <div>
-                <p>האם קיבלת תקבולים מהמוסד לביטוח לאומי בשנת 2017 (כגון דמי לידה, דמי אבטלה וכו')</p>
+                <p>האם קיבלת תקבולים מהמוסד לביטוח לאומי בשנת 2017 (כגון דמי לידה, דמי אבטלה וכו')?</p>
                 <a class="selection-btn js-single-selection" data-option="true">כן</a>
                 <a class="selection-btn js-single-selection" data-option="false">לא</a>
                 <input type="text" name="national_insurance_accepted" hidden>

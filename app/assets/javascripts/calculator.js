@@ -60,7 +60,7 @@
                            $('.js-second-degree-date').hide();
                            break;
                         case 'second_degree':
-                           $('.js-first-degree-date').show();
+                           $('.js-first-degree-date').hide();
                            $('.js-second-degree-date').show();
                            break;
                     }
