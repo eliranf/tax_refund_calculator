@@ -125,8 +125,8 @@ class CalculatorController < ApplicationController
       self.employment = employment.values
         
       super(opts)
-      
-      if national_insurance_accepted.to_s == 'true'
+
+      if national_insurance_accepted.to_s != 'true'
         self.national_insurance = 0
         self.national_insurance_tax = 0
       end
@@ -215,15 +215,15 @@ class CalculatorController < ApplicationController
     
     def first_degree_points
       return 0 if education == 'none' || first_degree_end_date.blank?
-      return 0 if first_degree_benefits_claimed || first_degree_benefits_claimed.blank?
+      return 0 if first_degree_benefits_claimed || first_degree_benefits_claimed == ''
       
       year = first_degree_end_date.year
       ((year >= 2015) && (year <= 2016)) ? 1 : 0
     end
     
     def second_degree_points
-      return 0 if education == 'none' || education == 'first_degree' || second_degree_end_date.blank?
-      return 0 if second_degree_benefits_claimed || second_degree_benefits_claimed.blank?
+      return 0 if education == 'none' || education == 'first_degree' || second_degree_end_date == ''
+      return 0 if second_degree_benefits_claimed || second_degree_benefits_claimed == ''
       
       year = second_degree_end_date.year
       ((year >= 2015) && (year <= 2016)) ? 0.5 : 0
