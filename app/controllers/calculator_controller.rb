@@ -20,9 +20,9 @@ class CalculatorController < ApplicationController
   end
   
   def email_content(description_params)
-    return_i = (description_params[:total_retun].gsub(',','').to_i / 0.85).to_i
+    return_i = (description_params[:total_retun].gsub(',','').to_i).to_i
     total_return = number_with_delimiter(return_i, :delimiter => ',')
-    commission = number_with_delimiter((return_i * 0.15).to_i, :delimiter => ',')
+    commission = number_with_delimiter((return_i * 0.175).to_i, :delimiter => ',')
 
     national_insurance = 'טפסים שהתקבלו מביטוח לאומי עבור קצבאות ששולמו בשנת 2017.' if description_params[:national_insurance_accepted].to_s == 'true'
     military_service = 'אישור סיום שירות לאומי / צבאי הכולל תאריך שחרור.' if description_params[:military_service].present? && [:military_service] != 'none'
@@ -222,7 +222,7 @@ class CalculatorController < ApplicationController
     end
     
     def second_degree_points
-      return 0 if education == 'none' || education == 'first_degree' || second_degree_end_date == ''
+      return 0 if education == 'none' || education == 'first_degree' || second_degree_end_date.blank?
       return 0 if second_degree_benefits_claimed || second_degree_benefits_claimed == ''
       
       year = second_degree_end_date.year
@@ -319,7 +319,6 @@ class CalculatorController < ApplicationController
     
     amount = input.calculate!
     amount = 0 if amount < 500
-    amount = amount * 0.85
 
     render json: { amount: number_with_delimiter(amount.to_i, :delimiter => ',') }
   end
