@@ -1,7 +1,8 @@
 body {
-    background-image: url(https://images.wallpaperscraft.com/image/coins_cents_america_80489_4074x2715.jpg) !important;
+    background-image: url(https://image.freepik.com/vetores-gratis/repeticao-de-padrao-de-fundo-quadrado-geometrico-design-grafico-vetorial-a-partir-de-quadrados-rotativos-aleatorios-com-efeito-de-opacidade_1164-1119.jpg) !important;
     background-attachment: fixed !important;
     background-size: 1400px 933px !important;
+    background-repeat: repeat !important;
 }
 
 .cf {
@@ -16,13 +17,17 @@ body {
     width: 100%;
     background-color: white;
 
+    img.contact {
+        margin-right: 5px;            
+    } 
+
     i.contact {
         margin-right: 5px;            
     } 
 
     ul {
         float: right;
-        width: 1000px;
+        width: 1400px;
         list-style-type: none;
         display: inline-block;
         margin-bottom: 0;
